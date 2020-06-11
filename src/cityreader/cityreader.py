@@ -1,5 +1,16 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
+import csv
+class City:
+    def __init__(self, name, lat, lon):
+        self.name = name
+        self.lon = lon
+        self.lat = lat
+
+    def __repr__(self):
+        return f"{self.name}, {self.lat}, {self.lon} \n"
+
+
 
 
 # We have a collection of US cities with population over 750,000 stored in the
@@ -16,18 +27,28 @@
 # should not be loaded into a City object.
 cities = []
 
+
 def cityreader(cities=[]):
-  # TODO Implement the functionality to read from the 'cities.csv' file
-  # For each city record, create a new City instance and add it to the 
-  # `cities` list
-    
+    # TODO Implement the functionality to read from the 'cities.csv' file
+    # For each city record, create a new City instance and add it to the
+    with open('cities.csv', 'r') as csvfile:
+        csv_data = csv.reader(csvfile)
+        next(csv_data)
+        info = []
+        for row in csv_data:
+            info.append(row)
+        for city in info:
+            cities.append(City(city[0], float(city[3]), float(city[4])))
+
+
     return cities
+
 
 cityreader(cities)
 
 # Print the list of cities (name, lat, lon), 1 record per line.
-for c in cities:
-    print(c)
+for c, i in enumerate(cities):
+    print(c, i,)
 
 # STRETCH GOAL!
 #
@@ -60,12 +81,23 @@ for c in cities:
 
 # TODO Get latitude and longitude values from the user
 
+user_entry = input("Enter two cordinate points  lat1,lon1, lat2,lon2: ").split(",")
+
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
+  cord_lat = sorted([float(lat1), float(lat2)])
+  cord_long = sorted([float(lon1), float(lon2)])
   within = []
 
   # TODO Ensure that the lat and lon valuse are all floats
-  # Go through each city and check to see if it falls within 
+  # Go through each city and check to see if it falls within
   # the specified coordinates.
 
+  for c in cities:
+    if c.lat >= cord_lat[0] and c.lat <= cord_lat[1] and c.lon >= cord_long[0] and c.lon <= cord_long[1]:
+      within.append(c)
+
+
   return within
+
+cityreader_stretch(user_entry[0], user_entry[1], user_entry[2], user_entry[3], cities)

@@ -50,4 +50,4 @@ vehicles = [
 
 
 for vehicle in vehicles:
-    print(f"{vehicle.drive()}")
+    print(f"{vehicle.drive()}, {vehicle.num_wheels}")
